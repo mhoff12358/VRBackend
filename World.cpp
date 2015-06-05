@@ -3,12 +3,31 @@
 World::World(ViewState* vs) : view_state(vs) {
 };
 
-void World::Initialize(InputHandler* ih, ResourcePool* dxrp) {
+void World::Initialize(InputHandler* ih, ResourcePool* rp) {
 	input_handler = ih;
-	resource_pool = dxrp;
+	resource_pool = rp;
 
 	player_location = { { 0.0f, 0.0f, 0.0f } };
 	player_orientation = { { 0.0f, 0.0f, 0.0f, 0.0f } };
+
+	VertexType vertex_type = common_vertex_types[1];
+	ConstantBufferTyped<TransformationMatrixAndInvTransData>* object_settings = new ConstantBufferTyped<TransformationMatrixAndInvTransData>(CB_PS_VERTEX_SHADER);
+	object_settings->CreateBuffer(view_state->device_interface);
+	object_settings->SetBothTransformations(DirectX::XMMatrixTranslation(0, 0, -4));
+	object_settings->PushBuffer(view_state->device_context);
+	std::vector<Vertex> vertices;
+	vertices.push_back(Vertex(vertex_type, { -1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f }));
+	vertices.push_back(Vertex(vertex_type, { 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f }));
+	vertices.push_back(Vertex(vertex_type, { -1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f }));
+	vertices.push_back(Vertex(vertex_type, { 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f }));
+	vertices.push_back(Vertex(vertex_type, { 1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f }));
+	vertices.push_back(Vertex(vertex_type, { -1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f }));
+	PixelShader ps = resource_pool->LoadPixelShader("shaders.hlsl");
+	VertexShader vs = resource_pool->LoadVertexShader("shaders.hlsl", vertex_type.GetVertexType(), vertex_type.GetSizeVertexType());
+	ShaderSettings ss(NULL);
+	Model mod = resource_pool->LoadModel("square", vertices, D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	ModelSlice ms(vertices.size(), 0);
+	root_render_group.entities.emplace_back(ps, vs, ss, mod, ms, object_settings);
 }
 
 void World::UpdateLogic(int time_delta) {

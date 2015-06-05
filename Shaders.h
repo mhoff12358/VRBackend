@@ -5,7 +5,11 @@
 class VertexShader
 {
 public:
-	void Prepare(ID3D11Device* device, ID3D11DeviceContext* device_context);
+	VertexShader();
+	VertexShader(ID3D11InputLayout* il, ID3D11VertexShader* vs);
+
+	void Prepare(ID3D11Device* device, ID3D11DeviceContext* device_context) const;
+	bool IsDummy() const;
 
 private:
 	ID3D11InputLayout* input_layout;
@@ -15,7 +19,11 @@ private:
 class PixelShader
 {
 public:
-	void Prepare(ID3D11Device* device, ID3D11DeviceContext* device_context);
+	PixelShader();
+	PixelShader(ID3D11PixelShader* ps);
+
+	void Prepare(ID3D11Device* device, ID3D11DeviceContext* device_context) const;
+	bool IsDummy() const;
 
 private:
 	ID3D11PixelShader* pixel_shader;

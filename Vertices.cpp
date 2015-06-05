@@ -1,14 +1,18 @@
 #include "Vertices.h"
 
-VertexType common_vertex_types[1] = {
+VertexType common_vertex_types[2] = {
 	VertexType(std::vector<D3D11_INPUT_ELEMENT_DESC>({
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		})),
+	VertexType(std::vector<D3D11_INPUT_ELEMENT_DESC>({
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		})),
 };
 
-VertexType::VertexType(D3D11_INPUT_ELEMENT_DESC* v_type, int size_of_type) {
-	for (int i = 0; i < size_of_type; i++) {
+VertexType::VertexType(D3D11_INPUT_ELEMENT_DESC* v_type, int num_elements_in_type) {
+	for (int i = 0; i < num_elements_in_type; i++) {
 		vertex_type.push_back(v_type[i]);
 	}
 }

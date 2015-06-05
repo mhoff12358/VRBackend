@@ -160,6 +160,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AsyncEntityBuffer.h" />
     <ClInclude Include="BeginDirectx.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantBuffer.h" />
@@ -167,6 +168,8 @@
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Logging.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="ModelGenerator.h" />
+    <ClInclude Include="ModelSlice.h" />
     <ClInclude Include="my_math.h" />
     <ClInclude Include="Oculus.h" />
     <ClInclude Include="OrthoCamera.h" />
@@ -185,6 +188,7 @@
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AsyncEntityBuffer.cpp" />
     <ClCompile Include="BeginDirectx.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
@@ -192,6 +196,8 @@
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Logging.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ModelGenerator.cpp" />
+    <ClCompile Include="ModelSlice.cpp" />
     <ClCompile Include="my_math.cpp" />
     <ClCompile Include="Oculus.cpp" />
     <ClCompile Include="OrthoCamera.cpp" />

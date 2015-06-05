@@ -14,7 +14,7 @@ struct VRBackendBasics {
 	InputHandler* input_handler;
 	RenderingPipeline* render_pipeline;
 	ViewState* view_state;
-	DXResourcePool* resource_pool;
+	ResourcePool* resource_pool;
 	World* world;
 	PerspectiveCamera* player_camera;
 } typedef VRBackendBasics;

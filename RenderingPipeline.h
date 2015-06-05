@@ -17,7 +17,7 @@
 
 class RenderingPipeline {
 public:
-	RenderingPipeline() : back_buffer(false, true) {}
+	RenderingPipeline() : back_buffer(false, true), player_camera_transformation(CB_PS_VERTEX_SHADER) {}
 
 	virtual void Initialize(ViewState* vs, World* world, InputHandler* ih, std::string rl);
 
@@ -36,6 +36,9 @@ protected:
 	InputHandler* input_handler;
 	World* game_world;
 	std::string resource_location;
+
+	PerspectiveCamera player_camera;
+	ConstantBufferTyped<TransformationMatrixData> player_camera_transformation;
 };
 
 class ToScreenRenderingPipeline : public RenderingPipeline {
@@ -46,8 +49,6 @@ public:
 
 private:
 	RenderMode render_to_back_buffer;
-	PerspectiveCamera player_camera;
-	ConstantBufferTyped<TransformationMatrixData> player_camera_transformation;
 };
 
 class ToOculusRenderingPipeline : public RenderingPipeline {
@@ -63,7 +64,4 @@ public:
 	RenderMode render_to_texture;
 
 	Oculus* oculus;
-
-	PerspectiveCamera player_camera;
-	ConstantBufferTyped<TransformationMatrixData> player_camera_transformation;
 };

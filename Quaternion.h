@@ -4,6 +4,7 @@
 
 class Quaternion {
 public:
+	Quaternion();
 	Quaternion(std::array<float, 4> val);
 	Quaternion(float xval, float yval, float zval, float wval);
 	std::array<float, 4> GetArray() const;

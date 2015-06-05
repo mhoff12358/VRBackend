@@ -19,7 +19,7 @@ class World {
 public:
 	World(ViewState* vs);
 
-	void Initialize(InputHandler* ih, ResourcePool* dxrp);
+	void Initialize(InputHandler* ih, ResourcePool* rp);
 
 	void UpdateLogic(int time_delta);
 

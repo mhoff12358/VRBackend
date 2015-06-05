@@ -1,5 +1,12 @@
 #include "Quaternion.h"
 
+Quaternion::Quaternion() {
+	x = 0;
+	y = 0;
+	z = 0;
+	w = 1;
+}
+
 Quaternion::Quaternion(std::array<float, 4> val) {
 	x = val[0];
 	y = val[1];

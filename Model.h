@@ -6,9 +6,11 @@ class Model
 {
 public:
 	Model();
+	Model(ID3D11Buffer* vb, UINT st, UINT off, UINT num_vert, D3D_PRIMITIVE_TOPOLOGY prim_type);
 	~Model();
 
-	void Prepare(ID3D11Device* device, ID3D11DeviceContext* device_context);
+	void Prepare(ID3D11Device* device, ID3D11DeviceContext* device_context) const;
+	bool IsDummy() const;
 
 private:
 	ID3D11Buffer* vertex_buffer;
@@ -18,12 +20,3 @@ private:
 	D3D_PRIMITIVE_TOPOLOGY primitive_type;
 };
 
-
-class ModelSlice
-{
-public:
-	ModelSlice(unsigned int num_vertices, unsigned int first_vertex);
-
-	unsigned int length;
-	unsigned int start;
-};

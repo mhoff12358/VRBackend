@@ -6,7 +6,7 @@ VRBackendBasics BeginDirectx(bool use_oculus, std::string resource_location) {
 	graphics_objects.oculus = new Oculus;
 	graphics_objects.input_handler = new InputHandler;
 	graphics_objects.view_state = new ViewState;
-	graphics_objects.resource_pool = new DXResourcePool;
+	graphics_objects.resource_pool = new ResourcePool;
 	graphics_objects.world = new World(graphics_objects.view_state);
 	graphics_objects.player_camera = new PerspectiveCamera;
 

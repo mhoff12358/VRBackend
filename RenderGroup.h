@@ -9,9 +9,10 @@ public:
 	~RenderGroup();
 
 	void Draw(ID3D11Device* device, ID3D11DeviceContext* device_context) const;
+	void Update(RenderGroup* other);
 
-private:
+	void ExpandTo(unsigned int required_size);
+
 	std::vector<Entity> entities;
-	std::vector<RenderGroup> render_groups;
 };
 
