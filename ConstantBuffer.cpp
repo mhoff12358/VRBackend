@@ -34,13 +34,26 @@ void ConstantBuffer::CreateBuffer(ID3D11Device* device_interface) {
 }
 
 void ConstantBuffer::PushBuffer(ID3D11DeviceContext* device_context) {
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+	if (dirty) {
+		D3D11_MAPPED_SUBRESOURCE mappedResource;
+		ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
-	// Disables GPU access to the data
-	device_context->Map(const_buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	memcpy(mappedResource.pData, GetBufferData(), GetBufferDataSize());
-	device_context->Unmap(const_buffer, 0);
+		// Disables GPU access to the data
+		device_context->Map(const_buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		memcpy(mappedResource.pData, GetBufferData(), GetBufferDataSize());
+		device_context->Unmap(const_buffer, 0);
+	}
+
+	dirty = false;
+}
+
+void ConstantBuffer::SetDirty() {
+	dirty = true;
+}
+
+void ConstantBuffer::ForcePushBuffer(ID3D11DeviceContext* device_context) {
+	SetDirty();
+	PushBuffer(device_context);
 }
 
 void ConstantBuffer::Prepare(ID3D11Device* device, ID3D11DeviceContext* device_context, int buffer_register) const {
@@ -54,18 +67,22 @@ void ConstantBuffer::Prepare(ID3D11Device* device, ID3D11DeviceContext* device_c
 
 void XM_CALLCONV ConstantBufferTyped<TransformationMatrixData>::SetTransformation(DirectX::FXMMATRIX new_trasnformation) {
 	DirectX::XMStoreFloat4x4(&buffer_data.transformation, new_trasnformation);
+	SetDirty();
 }
 
 void XM_CALLCONV ConstantBufferTyped<TransformationMatrixAndInvTransData>::SetBothTransformations(DirectX::FXMMATRIX new_trasnformation) {
 	DirectX::XMStoreFloat4x4(&buffer_data.transformation, new_trasnformation);
 	DirectX::XMStoreFloat4x4(&buffer_data.transformation_inv_trans,
 		DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(NULL, new_trasnformation)));
+	SetDirty();
 }
 
 void XM_CALLCONV ConstantBufferTyped<TransformationMatrixAndInvTransData>::SetTransformation(DirectX::FXMMATRIX new_trasnformation) {
 	DirectX::XMStoreFloat4x4(&buffer_data.transformation, new_trasnformation);
+	SetDirty();
 }
 
 void XM_CALLCONV ConstantBufferTyped<TransformationMatrixAndInvTransData>::SetTransformationInvTrans(DirectX::FXMMATRIX new_transformation_inv_trans) {
 	DirectX::XMStoreFloat4x4(&buffer_data.transformation_inv_trans, new_transformation_inv_trans);
+	SetDirty();
 }

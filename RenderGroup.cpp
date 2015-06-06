@@ -13,8 +13,8 @@ void RenderGroup::Update(RenderGroup* other) {
 	entities = other->entities;
 }
 
-void RenderGroup::Draw(ID3D11Device* device, ID3D11DeviceContext* device_context) const {
-	for (const Entity& entity : entities) {
+void RenderGroup::Draw(ID3D11Device* device, ID3D11DeviceContext* device_context) {
+	for (Entity& entity : entities) {
 		entity.Draw(device, device_context);
 	}
 }

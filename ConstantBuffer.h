@@ -32,6 +32,8 @@ public:
 
 	void CreateBuffer(ID3D11Device* device_interface);
 	void PushBuffer(ID3D11DeviceContext* device_context);
+	void SetDirty();
+	void ForcePushBuffer(ID3D11DeviceContext* device_context);
 
 	virtual void* GetBufferData() = 0;
 	virtual unsigned int GetBufferDataSize() = 0;
@@ -41,6 +43,7 @@ public:
 private:
 	ID3D11Buffer* const_buffer;
 	CB_PIPELINE_STAGES pipeline_stages;
+	bool dirty;
 };
 
 

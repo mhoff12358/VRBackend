@@ -27,7 +27,7 @@ void World::Initialize(InputHandler* ih, ResourcePool* rp) {
 	ShaderSettings ss(NULL);
 	Model mod = resource_pool->LoadModel("square", vertices, D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	ModelSlice ms(vertices.size(), 0);
-	root_render_group.entities.emplace_back(ps, vs, ss, mod, ms, object_settings);
+	root_render_group.entities.emplace_back(ES_NORMAL, ps, vs, ss, mod, ms, object_settings);
 }
 
 void World::UpdateLogic(int time_delta) {
