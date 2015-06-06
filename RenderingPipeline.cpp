@@ -66,10 +66,10 @@ void ToScreenRenderingPipeline::Render() {
 	player_camera.orientaiton = game_world->GetPlayerOrientation();
 	player_camera.InvalidateAllMatrices();
 
-	XMStoreFloat4x4(&(player_camera_transformation.GetBufferDataRef().transformation),
+	XMStoreFloat4x4(&(player_camera_transformation.GetBufferDataRef(true).transformation),
 		player_camera.GetViewProjectionMatrix()
 		);
-	player_camera_transformation.ForcePushBuffer(view_state->device_context);
+	player_camera_transformation.PushBuffer(view_state->device_context);
 
 	render_to_back_buffer.Clear(game_world->GetScreenColor());
 	view_state->device_context->ClearDepthStencilView(depth_buffer_view, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
@@ -117,10 +117,10 @@ void ToOculusRenderingPipeline::Render() {
 			input_handler->GetHeadOffset() + input_handler->GetEyeOffset(i));
 		player_camera.orientaiton = game_world->GetPlayerOrientation();
 		player_camera.InvalidateAllMatrices();
-		XMStoreFloat4x4(&(player_camera_transformation.GetBufferDataRef().transformation),
+		XMStoreFloat4x4(&(player_camera_transformation.GetBufferDataRef(true).transformation),
 			player_camera.GetViewProjectionMatrix()
 			);
-		player_camera_transformation.ForcePushBuffer(view_state->device_context);
+		player_camera_transformation.PushBuffer(view_state->device_context);
 
 		std::array<int, 2> viewport_position = { oculus->eye_viewports[i].Pos.x, oculus->eye_viewports[i].Pos.y };
 		std::array<int, 2> viewport_size = { oculus->eye_viewports[i].Size.w, oculus->eye_viewports[i].Size.h };

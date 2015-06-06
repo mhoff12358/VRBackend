@@ -26,7 +26,7 @@ void ConstantBuffer::CreateBuffer(ID3D11Device* device_interface) {
 
 	// Create the subresource data that carries the buffer data
 	D3D11_SUBRESOURCE_DATA sub_data;
-	sub_data.pSysMem = GetBufferData();
+	sub_data.pSysMem = GetBufferData(false);
 	sub_data.SysMemPitch = 0;
 	sub_data.SysMemSlicePitch = 0;
 
@@ -40,7 +40,7 @@ void ConstantBuffer::PushBuffer(ID3D11DeviceContext* device_context) {
 
 		// Disables GPU access to the data
 		device_context->Map(const_buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-		memcpy(mappedResource.pData, GetBufferData(), GetBufferDataSize());
+		memcpy(mappedResource.pData, GetBufferData(false), GetBufferDataSize());
 		device_context->Unmap(const_buffer, 0);
 	}
 

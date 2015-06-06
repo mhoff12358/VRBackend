@@ -3,9 +3,10 @@
 World::World(ViewState* vs) : view_state(vs) {
 };
 
-void World::Initialize(InputHandler* ih, ResourcePool* rp) {
+void World::Initialize(InputHandler* ih, ResourcePool* rp, EntityHandler* eh) {
 	input_handler = ih;
 	resource_pool = rp;
+	entity_handler = eh;
 
 	player_location = { { 0.0f, 0.0f, 0.0f } };
 	player_orientation = { { 0.0f, 0.0f, 0.0f, 0.0f } };

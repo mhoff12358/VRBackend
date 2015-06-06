@@ -14,12 +14,13 @@
 #include "Vertices.h"
 #include "ResourcePool.h"
 #include "RenderGroup.h"
+#include "EntityHandler.h"
 
 class World {
 public:
 	World(ViewState* vs);
 
-	void Initialize(InputHandler* ih, ResourcePool* rp);
+	void Initialize(InputHandler* ih, ResourcePool* rp, EntityHandler* eh);
 
 	void UpdateLogic(int time_delta);
 
@@ -34,6 +35,7 @@ private:
 	ViewState* view_state;
 	InputHandler* input_handler;
 	ResourcePool* resource_pool;
+	EntityHandler* entity_handler;
 
 	RenderGroup root_render_group;
 
