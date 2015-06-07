@@ -35,7 +35,9 @@ public:
 	void SetDirty();
 	void ForcePushBuffer(ID3D11DeviceContext* device_context);
 
-	virtual void* GetBufferData(bool set_dirty) = 0;
+	virtual void* EditBufferData() = 0;
+	virtual void* EditBufferData(bool set_dirty) = 0;
+	virtual const void* ReadBufferData() = 0;
 	virtual unsigned int GetBufferDataSize() = 0;
 
 	void Prepare(ID3D11Device* device, ID3D11DeviceContext* device_context, int buffer_register) const;
@@ -52,22 +54,20 @@ class ConstantBufferTypedTemp : public ConstantBuffer {
 public:
 	ConstantBufferTypedTemp(CB_PIPELINE_STAGES stages) : ConstantBuffer(stages) {}
 
-	void* GetBufferData(bool set_dirty);
+	void* EditBufferData();
+	void* EditBufferData(bool set_dirty);
+	const void* ReadBufferData();
 	unsigned int GetBufferDataSize();
-	ConstantBufferData& GetBufferDataRef(bool set_dirty);
-	//void SetBufferData(const ConstantBufferData& new_data);
+
+	ConstantBufferData& EditBufferDataRef();
+	ConstantBufferData& EditBufferDataRef(bool set_dirty);
+	const ConstantBufferData& ReadBufferDataRef();
+
+	void SetBufferData(const ConstantBufferData& new_data);
 
 protected:
 	ConstantBufferData buffer_data;
 };
-
-template <typename ConstantBufferData>
-ConstantBufferData& ConstantBufferTypedTemp<ConstantBufferData>::GetBufferDataRef(bool set_dirty) {
-	if (set_dirty) {
-		SetDirty();
-	}
-	return buffer_data;
-}
 
 template <typename ConstantBufferData>
 unsigned int ConstantBufferTypedTemp<ConstantBufferData>::GetBufferDataSize() {
@@ -75,20 +75,48 @@ unsigned int ConstantBufferTypedTemp<ConstantBufferData>::GetBufferDataSize() {
 }
 
 template <typename ConstantBufferData>
-void* ConstantBufferTypedTemp<ConstantBufferData>::GetBufferData(bool set_dirty) {
+void* ConstantBufferTypedTemp<ConstantBufferData>::EditBufferData() {
+	SetDirty();
+	return (void*)&buffer_data;
+}
+
+template <typename ConstantBufferData>
+void* ConstantBufferTypedTemp<ConstantBufferData>::EditBufferData(bool set_dirty) {
 	if (set_dirty) {
 		SetDirty();
 	}
 	return (void*)&buffer_data;
 }
 
-/*
 template <typename ConstantBufferData>
-void ConstantBufferTypedTemp<ConstantBufferData>::SetBufferData(const ConstantBufferData* new_data) {
+const void* ConstantBufferTypedTemp<ConstantBufferData>::ReadBufferData() {
+	return (void*)&buffer_data;
+}
+
+template <typename ConstantBufferData>
+ConstantBufferData& ConstantBufferTypedTemp<ConstantBufferData>::EditBufferDataRef() {
+	SetDirty();
+	return buffer_data;
+}
+
+template <typename ConstantBufferData>
+ConstantBufferData& ConstantBufferTypedTemp<ConstantBufferData>::EditBufferDataRef(bool set_dirty) {
+	if (set_dirty) {
+		SetDirty();
+	}
+	return buffer_data;
+}
+
+template <typename ConstantBufferData>
+const ConstantBufferData& ConstantBufferTypedTemp<ConstantBufferData>::ReadBufferDataRef() {
+	return &buffer_data;
+}
+
+template <typename ConstantBufferData>
+void ConstantBufferTypedTemp<ConstantBufferData>::SetBufferData(const ConstantBufferData& new_data) {
 	SetDirty();
 	buffer_data = new_data;
 }
-*/
 
 template <typename ConstantBufferData>
 class ConstantBufferTyped : public ConstantBufferTypedTemp < ConstantBufferData > {

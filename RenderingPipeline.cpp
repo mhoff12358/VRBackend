@@ -66,7 +66,7 @@ void ToScreenRenderingPipeline::Render() {
 	player_camera.orientaiton = game_world->GetPlayerOrientation();
 	player_camera.InvalidateAllMatrices();
 
-	XMStoreFloat4x4(&(player_camera_transformation.GetBufferDataRef(true).transformation),
+	XMStoreFloat4x4(&(player_camera_transformation.EditBufferDataRef().transformation),
 		player_camera.GetViewProjectionMatrix()
 		);
 	player_camera_transformation.PushBuffer(view_state->device_context);
@@ -117,7 +117,7 @@ void ToOculusRenderingPipeline::Render() {
 			input_handler->GetHeadOffset() + input_handler->GetEyeOffset(i));
 		player_camera.orientaiton = game_world->GetPlayerOrientation();
 		player_camera.InvalidateAllMatrices();
-		XMStoreFloat4x4(&(player_camera_transformation.GetBufferDataRef(true).transformation),
+		XMStoreFloat4x4(&(player_camera_transformation.EditBufferDataRef().transformation),
 			player_camera.GetViewProjectionMatrix()
 			);
 		player_camera_transformation.PushBuffer(view_state->device_context);
