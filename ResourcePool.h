@@ -4,6 +4,7 @@
 #include "Shaders.h"
 #include "Vertices.h"
 #include "ModelGenerator.h"
+#include "ObjLoader.h"
 
 #include <vector>
 #include <utility>

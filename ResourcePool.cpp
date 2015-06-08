@@ -36,6 +36,16 @@ Model ResourcePool::LoadModel(std::string model_name, std::vector<Vertex> vertic
 	return new_model;
 }
 
+Model ResourcePool::LoadModel(std::string file_name) {
+	auto existing_model = model_lookup.find(file_name);
+	if (existing_model != model_lookup.end()) {
+		return models[existing_model->second];
+	}
+
+	Model new_model = ObjLoader::CreateModel(device_interface, device_context, file_name);
+	return new_model;
+}
+
 PixelShader ResourcePool::LoadPixelShader(std::string file_name) {
 	return LoadPixelShader(file_name, "PShader");
 }

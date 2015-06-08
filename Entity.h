@@ -19,19 +19,19 @@ enum EntityStatusFlags : unsigned char {
 class Entity
 {
 public:
-	Entity(EntityStatusFlags stat, PixelShader ps, VertexShader vs, ShaderSettings ss, Model m, ModelSlice ms, ConstantBuffer* os);
+	Entity(EntityStatusFlags stat, PixelShader ps, VertexShader vs, ShaderSettings ss, Model m, ConstantBuffer* os);
 	~Entity();
 
 	void Draw(ID3D11Device* device, ID3D11DeviceContext* device_context);
-	void Prepare(ID3D11Device* device, ID3D11DeviceContext* device_context);
 
 	EntityStatusFlags status;
 
 private:
+	void Prepare(ID3D11Device* device, ID3D11DeviceContext* device_context);
+
 	PixelShader pixel_shader;
 	VertexShader vertex_shader;
 	ShaderSettings shader_settings;
 	Model model;
-	ModelSlice model_slice;
 	ConstantBuffer* object_settings;
 };

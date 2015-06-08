@@ -172,6 +172,7 @@
     <ClInclude Include="ModelGenerator.h" />
     <ClInclude Include="ModelSlice.h" />
     <ClInclude Include="my_math.h" />
+    <ClInclude Include="ObjLoader.h" />
     <ClInclude Include="Oculus.h" />
     <ClInclude Include="OrthoCamera.h" />
     <ClInclude Include="PerspectiveCamera.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="ModelGenerator.cpp" />
     <ClCompile Include="ModelSlice.cpp" />
     <ClCompile Include="my_math.cpp" />
+    <ClCompile Include="ObjLoader.cpp" />
     <ClCompile Include="Oculus.cpp" />
     <ClCompile Include="OrthoCamera.cpp" />
     <ClCompile Include="PerspectiveCamera.cpp" />

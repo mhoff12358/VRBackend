@@ -1,9 +1,9 @@
 #include "Entity.h"
 
 
-Entity::Entity(EntityStatusFlags stat, PixelShader ps, VertexShader vs, ShaderSettings ss, Model m, ModelSlice ms, ConstantBuffer* os)
+Entity::Entity(EntityStatusFlags stat, PixelShader ps, VertexShader vs, ShaderSettings ss, Model m, ConstantBuffer* os)
 	: status(stat), object_settings(os), pixel_shader(ps), vertex_shader(vs),
-	  shader_settings(ss), model(m), model_slice(ms)
+	  shader_settings(ss), model(m)
 {
 
 }
@@ -36,7 +36,7 @@ void Entity::Draw(ID3D11Device* device, ID3D11DeviceContext* device_context) {
 
 	// Only attempt to draw the entity if its not a settings entity
 	if ((status & ES_SETTINGS) == 0) {
-		device_context->Draw(model_slice.length, model_slice.start);
+		device_context->Draw(model.slice.length, model.slice.start);
 	}
 	else {
 

@@ -19,11 +19,14 @@ public:
 	// Update loop updaters
 	void FinishUpdate();
 
-	unsigned int AddEntity();
+	unsigned int AddEntity(Entity new_entity);
 	void RemoveEntity(unsigned int entity_id);
 	
-	//template <typename T>
-	//T* 
+	template <typename T>
+	void SetEntityObjectSettings(unsigned int entity_id, const T& new_settings);
+
+	template <typename T>
+	ConstantBufferTyped<T>* GetEntityObjectSettings(unsigned int entity_id);
 
 private:
 	ResourcePool* resource_pool;
@@ -32,5 +35,15 @@ private:
 	std::vector<unsigned int> entity_map;
 
 	AsyncEntityBuffer entity_buffers;
+	RenderGroup* current_edit_group;
 };
 
+template <typename T>
+ConstantBufferTyped<T>* EntityHandler::GetEntityObjectSettings(unsigned int entity_id) {
+	return dynamic_cast<ConstantBufferTyped<T>*>(current_edit_group->entities[entity_id].object_settings);
+}
+
+template <typename T>
+void EntityHandler::SetEntityObjectSettings(unsigned int entity_id, const T& new_settings) {
+	*dynamic_cast<T*>(current_edit_group->entities[entity_id].object_settings->EditBufferData()) = new_settings;
+}

@@ -46,6 +46,6 @@ void ModelGenerator::InitializeVertexBuffer(ID3D11Device* device, ID3D11DeviceCo
 
 Model ModelGenerator::DumpModel(ID3D11Device* device, ID3D11DeviceContext* device_context) {
 	InitializeVertexBuffer(device, device_context);
-	Model model(vertex_buffer, vertex_type.GetVertexSize(), 0, vertices.size(), primitive_type);
+	Model model(vertex_buffer, vertex_type.GetVertexSize(), 0, vertices.size(), primitive_type, ModelSlice(vertices.size(), 0));
 	return model;
 }

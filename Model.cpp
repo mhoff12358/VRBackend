@@ -2,12 +2,12 @@
 #include "ResourcePool.h"
 
 Model::Model()
-	: vertex_buffer(NULL)
+	: vertex_buffer(NULL), slice(0, 0)
 {
 }
 
-Model::Model(ID3D11Buffer* vb, UINT st, UINT off, UINT num_vert, D3D_PRIMITIVE_TOPOLOGY prim_type)
-	: vertex_buffer(vb), stride(st), offset(off), num_vertices(num_vert), primitive_type(prim_type) {
+Model::Model(ID3D11Buffer* vb, UINT st, UINT off, UINT num_vert, D3D_PRIMITIVE_TOPOLOGY prim_type, ModelSlice ms)
+	: vertex_buffer(vb), stride(st), offset(off), num_vertices(num_vert), primitive_type(prim_type), slice(ms) {
 
 }
 

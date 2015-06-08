@@ -10,6 +10,8 @@ public:
 	AsyncEntityBuffer();
 	~AsyncEntityBuffer();
 
+	RenderGroup* Initialize();
+
 	// These two methods are called by the writer and consumer repsectively to
 	// alert that they have finished with the RenderGroup they were using.
 	RenderGroup* ProducerFinish();

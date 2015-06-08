@@ -13,6 +13,10 @@ AsyncEntityBuffer::~AsyncEntityBuffer()
 {
 }
 
+RenderGroup* AsyncEntityBuffer::Initialize() {
+	return writing_group;
+}
+
 RenderGroup* AsyncEntityBuffer::ProducerFinish() {
 	state_ownership_lock.lock();
 	// Mark W as N
