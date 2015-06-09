@@ -25,6 +25,7 @@ public:
 	void Draw(ID3D11Device* device, ID3D11DeviceContext* device_context);
 
 	EntityStatusFlags status;
+	ConstantBuffer* object_settings;
 
 private:
 	void Prepare(ID3D11Device* device, ID3D11DeviceContext* device_context);
@@ -33,5 +34,4 @@ private:
 	VertexShader vertex_shader;
 	ShaderSettings shader_settings;
 	Model model;
-	ConstantBuffer* object_settings;
 };

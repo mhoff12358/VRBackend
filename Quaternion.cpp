@@ -67,6 +67,7 @@ Quaternion Quaternion::RotationBetweenVectors(const std::array<float, 3>& start_
 	}
 	// The first 3 values are the cross product, and the last value is the dot product
 	std::array<float, 4> result_vec;
+	result_vec[3] = 0.0f;
 	for (int i = 0; i < 3; i++) {
 		result_vec[3] += start_vec[i] * halfway_vec[i];
 	}
