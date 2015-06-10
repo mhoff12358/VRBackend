@@ -62,8 +62,14 @@ Quaternion Quaternion::Slerp(const Quaternion& q0, const Quaternion& q1, float w
 Quaternion Quaternion::RotationBetweenVectors(const std::array<float, 3>& start_vec, const std::array<float, 3>& end_vec) {
 	// This assumes that the two vectors are normalized
 	std::array<float, 3> halfway_vec;
+	float halfway_vec_mag = 0.0f;
 	for (int i = 0; i < 3; i++) {
 		halfway_vec[i] = (start_vec[i] + end_vec[i]) / 2.0f;
+		halfway_vec_mag += pow(halfway_vec[i], 2);
+	}
+	halfway_vec_mag = pow(halfway_vec_mag, 0.5);
+	for (int i = 0; i < 3; i++) {
+		halfway_vec[i] /= halfway_vec_mag;
 	}
 	// The first 3 values are the cross product, and the last value is the dot product
 	std::array<float, 4> result_vec;
@@ -71,8 +77,8 @@ Quaternion Quaternion::RotationBetweenVectors(const std::array<float, 3>& start_
 	for (int i = 0; i < 3; i++) {
 		result_vec[3] += start_vec[i] * halfway_vec[i];
 	}
-	result_vec[0] = start_vec[1] * halfway_vec[2] - start_vec[2] * halfway_vec[1];
-	result_vec[1] = -start_vec[0] * halfway_vec[2] + start_vec[2] * halfway_vec[0];
-	result_vec[2] = start_vec[0] * halfway_vec[1] - start_vec[1] * halfway_vec[0];
+	result_vec[0] = halfway_vec[1] * start_vec[2] - halfway_vec[2] * start_vec[1];
+	result_vec[1] = -halfway_vec[0] * start_vec[2] + halfway_vec[2] * start_vec[0];
+	result_vec[2] = halfway_vec[0] * start_vec[1] - halfway_vec[1] * start_vec[0];
 	return Quaternion(result_vec);
 }

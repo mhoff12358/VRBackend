@@ -2,6 +2,16 @@
 
 #include <array>
 
+enum AxisID {
+	AID_X = 0x1,
+	AID_Y = 0x2,
+	AID_Z = 0x4,
+	AID_XY = AID_X | AID_Y,
+	AID_XZ = AID_X | AID_Z,
+	AID_YZ = AID_Y | AID_Z,
+	AID_XYZ = AID_X | AID_Y | AID_Z,
+};
+
 class Quaternion {
 public:
 	Quaternion();
