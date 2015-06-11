@@ -51,6 +51,17 @@ Quaternion Quaternion::ToPower(const float& other) const {
 	return Quaternion(imaginary_scale*x, imaginary_scale*y, imaginary_scale*z, cos(theta*other/2.0f));
 }
 
+Quaternion Quaternion::RotationAboutAxis(AxisID axis, float angle_in_radians) {
+	switch (axis) {
+	case AID_X:
+		return Quaternion(sin(angle_in_radians / 2.0f), 0, 0, cos(angle_in_radians / 2));
+	case AID_Y:
+		return Quaternion(0, sin(angle_in_radians / 2.0f), 0, cos(angle_in_radians / 2));
+	case AID_Z:
+		return Quaternion(0, 0, sin(angle_in_radians / 2.0f), cos(angle_in_radians / 2));
+	}
+}
+
 Quaternion Quaternion::Slerp(const Quaternion& q0, const Quaternion& q1, float weight) {
 	if (q0.dot(q1) >= 0) {
 		return q0*((q0.ToPower(-1)*q1).ToPower(weight));
