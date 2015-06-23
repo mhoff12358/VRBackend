@@ -10,7 +10,7 @@
 #include "ViewState.h"
 #include "EntityHandler.h"
 
-struct VRBackendBasics {
+typedef struct {
 	Oculus* oculus;
 	InputHandler* input_handler;
 	RenderingPipeline* render_pipeline;
@@ -19,6 +19,6 @@ struct VRBackendBasics {
 	EntityHandler* entity_handler;
 	World* world;
 	PerspectiveCamera* player_camera;
-} typedef VRBackendBasics;
+} VRBackendBasics;
 
 VRBackendBasics BeginDirectx(bool use_oculus, std::string resource_location);

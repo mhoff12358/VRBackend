@@ -69,6 +69,10 @@ PixelShader ResourcePool::LoadPixelShader(std::string file_name, std::string fun
 	return new_pixel_shader;
 }
 
+VertexShader ResourcePool::LoadVertexShader(std::string file_name, VertexType vertex_type) {
+	return LoadVertexShader(file_name, vertex_type.GetVertexType(), vertex_type.GetSizeVertexType());
+}
+
 VertexShader ResourcePool::LoadVertexShader(std::string file_name, D3D11_INPUT_ELEMENT_DESC ied[], int ied_size) {
 	return LoadVertexShader(file_name, "VShader", ied, ied_size);
 }
@@ -84,7 +88,7 @@ VertexShader ResourcePool::LoadVertexShader(std::string file_name, std::string f
 	ID3D10Blob* vertex_shader_blob;
 	D3DX11CompileFromFile(file_name.c_str(), 0, 0, function_name.c_str(), "vs_5_0", 0, 0, 0, &vertex_shader_blob, 0, 0);
 	device_interface->CreateVertexShader(vertex_shader_blob->GetBufferPointer(), vertex_shader_blob->GetBufferSize(), NULL, &new_dx_vertex_shader);
-	device_interface->CreateInputLayout(ied, ied_size, vertex_shader_blob->GetBufferPointer(), vertex_shader_blob->GetBufferSize(), &new_dx_input_layout);
+	HandleHResult(device_interface->CreateInputLayout(ied, ied_size, vertex_shader_blob->GetBufferPointer(), vertex_shader_blob->GetBufferSize(), &new_dx_input_layout));
 
 	VertexShader new_vertex_shader(new_dx_input_layout, new_dx_vertex_shader);
 

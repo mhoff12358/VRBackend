@@ -21,6 +21,10 @@ VertexType::VertexType(std::vector<D3D11_INPUT_ELEMENT_DESC> v_type) : vertex_ty
 
 }
 
+VertexType::VertexType() {
+
+}
+
 D3D11_INPUT_ELEMENT_DESC* VertexType::GetVertexType() {
 	return vertex_type.data();
 }
