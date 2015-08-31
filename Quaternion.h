@@ -1,6 +1,9 @@
 #pragma once
 
 #include <array>
+#include <iostream>
+
+#include "my_math.h"
 
 enum AxisID {
 	AID_X = 0x1,
@@ -21,9 +24,17 @@ public:
 
 	float dot(const Quaternion& other) const;
 
+	std::array<float, 3> ApplyToVector(std::array<float, 3> input_vec);
+
+
+	float ImaginaryMagnitude();
+	float Magnitude();
+
 	Quaternion operator*(const Quaternion& other) const;
 	Quaternion operator*(const float other) const;
 	Quaternion ToPower(const float& other) const;
+	Quaternion Inverse() const;
+	Quaternion StripAxis(AxisID axis) const;
 	
 	float x, y, z, w;
 
@@ -31,4 +42,7 @@ public:
 	static Quaternion RotationBetweenVectors(const std::array<float, 3>& start_vec, const std::array<float, 3>& end_vec);
 	static Quaternion RotationAboutAxis(AxisID axis, float angle_in_radians);
 
+private:
+	void NormalizeImaginary();
+	void NormalizeAll();
 };

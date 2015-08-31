@@ -27,6 +27,15 @@ float Quaternion::dot(const Quaternion& other) const {
 	return x*other.x + y*other.y + z*other.z + w*other.w;
 }
 
+std::array<float, 3> Quaternion::ApplyToVector(std::array<float, 3> input_vec) {
+	Quaternion inv = *this;
+	inv.x *= -1;
+	inv.y *= -1;
+	inv.z *= -1;
+	Quaternion result = (*this) * Quaternion(input_vec[0], input_vec[1], input_vec[2], 0) * inv;
+	return std::array<float, 3>({ result.x, result.y, result.z });
+}
+
 Quaternion Quaternion::operator*(const Quaternion& other) const {
 	return Quaternion(
 		w*other.x + x*other.w + y*other.z - z*other.y,
@@ -51,6 +60,26 @@ Quaternion Quaternion::ToPower(const float& other) const {
 	return Quaternion(imaginary_scale*x, imaginary_scale*y, imaginary_scale*z, cos(theta*other/2.0f));
 }
 
+Quaternion Quaternion::Inverse() const {
+	return Quaternion(-x, -y, -z, w);
+}
+
+Quaternion Quaternion::StripAxis(AxisID axis) const {
+	Quaternion new_quaternion = *this;
+	if ((axis & AID_X) != 0) {
+		new_quaternion.x = 0;
+	}
+	if ((axis & AID_Y) != 0) {
+		new_quaternion.y = 0;
+	}
+	if ((axis & AID_Z) != 0) {
+		new_quaternion.z = 0;
+	}
+	new_quaternion.NormalizeImaginary();
+	new_quaternion.NormalizeAll();
+	return new_quaternion;
+}
+
 Quaternion Quaternion::RotationAboutAxis(AxisID axis, float angle_in_radians) {
 	switch (axis) {
 	case AID_X:
@@ -59,6 +88,8 @@ Quaternion Quaternion::RotationAboutAxis(AxisID axis, float angle_in_radians) {
 		return Quaternion(0, sin(angle_in_radians / 2.0f), 0, cos(angle_in_radians / 2));
 	case AID_Z:
 		return Quaternion(0, 0, sin(angle_in_radians / 2.0f), cos(angle_in_radians / 2));
+	default:
+		std::cerr << "Rotation about combined axis" << std::endl;
 	}
 }
 
@@ -71,25 +102,67 @@ Quaternion Quaternion::Slerp(const Quaternion& q0, const Quaternion& q1, float w
 }
 
 Quaternion Quaternion::RotationBetweenVectors(const std::array<float, 3>& start_vec, const std::array<float, 3>& end_vec) {
-	// This assumes that the two vectors are normalized
-	std::array<float, 3> halfway_vec;
-	float halfway_vec_mag = 0.0f;
-	for (int i = 0; i < 3; i++) {
-		halfway_vec[i] = (start_vec[i] + end_vec[i]) / 2.0f;
-		halfway_vec_mag += pow(halfway_vec[i], 2);
+	std::cout << "rotation betweeen call" << std::endl;
+	std::array<float, 3> rotation_vector = cross(start_vec, end_vec);
+	dump_vector(rotation_vector);
+	rotation_vector = vertex_normalize(rotation_vector);
+	dump_vector(rotation_vector);
+	float dot_prod = ::dot(vertex_normalize(start_vec), vertex_normalize(end_vec));
+	dot_prod = std::max(std::min(dot_prod, 1.0f), -1.0f);
+	std::cout << dot_prod << std::endl;
+	float angle_between = acos(dot_prod);
+	std::cout << angle_between << std::endl;
+	return Quaternion(
+		rotation_vector[0] * sin(angle_between / 2.0f),
+		rotation_vector[1] * sin(angle_between / 2.0f),
+		rotation_vector[2] * sin(angle_between / 2.0f),
+		cos(angle_between / 2.0f));
+}
+
+void Quaternion::NormalizeImaginary() {
+	float magnitude = 0.0f;
+	magnitude += x * x;
+	magnitude += y * y;
+	magnitude += z * z;
+	magnitude = sqrtf(magnitude);
+	if (magnitude != 0) {
+		x = x / magnitude;
+		y = y / magnitude;
+		z = z / magnitude;
 	}
-	halfway_vec_mag = pow(halfway_vec_mag, 0.5);
-	for (int i = 0; i < 3; i++) {
-		halfway_vec[i] /= halfway_vec_mag;
+}
+
+void Quaternion::NormalizeAll() {
+	float magnitude = 0.0f;
+	magnitude += x * x;
+	magnitude += y * y;
+	magnitude += z * z;
+	if (magnitude == 0) {
+		w = 1.0f;
+		return;
 	}
-	// The first 3 values are the cross product, and the last value is the dot product
-	std::array<float, 4> result_vec;
-	result_vec[3] = 0.0f;
-	for (int i = 0; i < 3; i++) {
-		result_vec[3] += start_vec[i] * halfway_vec[i];
-	}
-	result_vec[0] = halfway_vec[1] * start_vec[2] - halfway_vec[2] * start_vec[1];
-	result_vec[1] = -halfway_vec[0] * start_vec[2] + halfway_vec[2] * start_vec[0];
-	result_vec[2] = halfway_vec[0] * start_vec[1] - halfway_vec[1] * start_vec[0];
-	return Quaternion(result_vec);
+	magnitude += w * w;
+	magnitude = sqrtf(magnitude);
+	x = x / magnitude;
+	y = y / magnitude;
+	z = z / magnitude;
+	w = w / magnitude;
+}
+
+float Quaternion::ImaginaryMagnitude() {
+	float magnitude = 0.0f;
+	magnitude += x * x;
+	magnitude += y * y;
+	magnitude += z * z;
+	magnitude = sqrtf(magnitude);
+	return magnitude / sin(acos(w));
+}
+
+float Quaternion::Magnitude() {
+	float magnitude = 0.0f;
+	magnitude += x * x;
+	magnitude += y * y;
+	magnitude += z * z;
+	magnitude += w * w;
+	return sqrt(magnitude);
 }

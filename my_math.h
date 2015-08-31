@@ -6,6 +6,7 @@
 #include <array>
 #include <stdlib.h>
 #include <cmath>
+#include <iostream>
 
 using std::array;
 
@@ -15,6 +16,13 @@ using std::array;
 float lerp(float, float, float);
 array<float, 3> vertex_normalize(array<float, 3>);
 float randf(float, float);
+
+float magnitude(array<float, 3> in_vert);
+float magnitude(array<float, 4> in_vert);
+array<float, 3> cross(array<float, 3> u, array<float, 3> v);
+float dot(array<float, 3> u, array<float, 3> v);
+
+void dump_vector(array<float, 3> v);
 
 int eucmod(int a, int modulus);
 
