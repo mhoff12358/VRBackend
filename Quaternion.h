@@ -39,7 +39,7 @@ public:
 	float x, y, z, w;
 
 	static Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float weight);
-	static Quaternion RotationBetweenVectors(const std::array<float, 3>& start_vec, const std::array<float, 3>& end_vec);
+	static Quaternion RotationBetweenVectors(const std::array<float, 3>& start_vec, const std::array<float, 3>& end_vec, float proportion_of_angle = 1.0f);
 	static Quaternion RotationAboutAxis(AxisID axis, float angle_in_radians);
 
 private:
