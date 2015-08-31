@@ -102,16 +102,11 @@ Quaternion Quaternion::Slerp(const Quaternion& q0, const Quaternion& q1, float w
 }
 
 Quaternion Quaternion::RotationBetweenVectors(const std::array<float, 3>& start_vec, const std::array<float, 3>& end_vec) {
-	std::cout << "rotation betweeen call" << std::endl;
 	std::array<float, 3> rotation_vector = cross(start_vec, end_vec);
-	dump_vector(rotation_vector);
 	rotation_vector = vertex_normalize(rotation_vector);
-	dump_vector(rotation_vector);
 	float dot_prod = ::dot(vertex_normalize(start_vec), vertex_normalize(end_vec));
 	dot_prod = std::max(std::min(dot_prod, 1.0f), -1.0f);
-	std::cout << dot_prod << std::endl;
 	float angle_between = acos(dot_prod);
-	std::cout << angle_between << std::endl;
 	return Quaternion(
 		rotation_vector[0] * sin(angle_between / 2.0f),
 		rotation_vector[1] * sin(angle_between / 2.0f),
